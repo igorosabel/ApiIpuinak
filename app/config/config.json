@@ -1,0 +1,12 @@
+{
+	"name": "API Ipuinnak",
+	"db": {
+		"host": "localhost",
+		"user": "ipuinak",
+		"pass": "D?3389run",
+		"name": "ipuinak"
+	},
+	"base_url": "https://apiipuinak.osumi.es",
+	"default_title": "Ipuinak",
+	"log_level": "ALL"
+}
