@@ -7,40 +7,42 @@ use OsumiFramework\OFW\DB\OModelGroup;
 use OsumiFramework\OFW\DB\OModelField;
 use OsumiFramework\OFW\DB\ODB;
 
-class Dialog extends OModel {
+class Character extends OModel {
 	function __construct() {
 		$model = new OModelGroup(
 			new OModelField(
 				name: 'id',
 				type: OMODEL_PK,
-				comment: 'Id único de cada diálogo'
+				comment: 'Id único de cada personaje'
 			),
 			new OModelField(
-				name: 'id_page',
+				name: 'id_tale',
 				type: OMODEL_NUM,
 				nullable: false,
-				ref: 'page.id',
-				comment: 'Id de la página a la que pertenece'
+				ref: 'tale.id',
+				comment: 'Id del cuento al que pertenece'
 			),
 			new OModelField(
-				name: 'id_character',
-				type: OMODEL_NUM,
+				name: 'name',
+				type: OMODEL_TEXT,
+				nullable: false,
+				size: 50,
+				comment: 'Nombre del personaje'
+			),
+			new OModelField(
+				name: 'has_image',
+				type: OMODEL_BOOL,
+				nullable: false,
+				default: false,
+				comment: 'Indica si el personaje tiene una imagen 1 o no 0'
+			),
+			new OModelField(
+				name: 'color',
+				type: OMODEL_TEXT,
 				nullable: true,
 				default: null,
-				ref: 'character.id',
-				comment: 'Id del personaje que narra el dialogo'
-			),
-			new OModelField(
-				name: 'dialog_order',
-				type: OMODEL_NUM,
-				nullable: false,
-				comment: 'Orden del diálogo en la página'
-			),
-			new OModelField(
-				name: 'content',
-				type: OMODEL_LONGTEXT,
-				nullable: false,
-				comment: 'Texto del dialogo'
+				size: 6,
+				comment: 'Color para los textos del personaje'
 			),
 			new OModelField(
 				name: 'created_at',

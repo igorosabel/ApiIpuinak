@@ -64,6 +64,13 @@ class Page extends OModel {
 				comment: 'Tipo de animación para la salida de la página'
 			),
 			new OModelField(
+				name: 'next_page',
+				type: OMODEL_NUM,
+				nullable: true,
+				default: null,
+				comment: 'Indica cual es la siguiente pagina'
+			),
+			new OModelField(
 				name: 'created_at',
 				type: OMODEL_CREATED,
 				comment: 'Fecha de creación del registro'

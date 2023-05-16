@@ -38,7 +38,7 @@ class Tale extends OModel {
 
 		parent::load($model);
 	}
-	
+
 	private ?array $pages = null;
 
 	/**
@@ -82,5 +82,50 @@ class Tale extends OModel {
 		}
 
 		$this->setPages($list);
+	}
+
+	private ?array $characters = null;
+
+	/**
+	 * Obtiene el listado de personajes de un cuento
+	 *
+	 * @return array Listado de personajes
+	 */
+	public function getCharacters(): array {
+		if (is_null($this->characters)) {
+			$this->loadCharacters();
+		}
+		return $this->characters;
+	}
+
+	/**
+	 * Guarda la lista de personajes
+	 *
+	 * @param array $c Lista de personajes
+	 *
+	 * @return void
+	 */
+	public function setCharacters(array $c): void {
+		$this->characters = $c;
+	}
+
+	/**
+	 * Carga la lista de personajes de un cuento
+	 *
+	 * @return void
+	 */
+	public function loadCharacters(): void {
+		$db = new ODB();
+		$sql = "SELECT * FROM `character` WHERE `id_tale` = ? ORDER BY `name` ASC";
+		$db->query($sql, [$this->get('id')]);
+		$list = [];
+
+		while ($res=$db->next()) {
+			$c = new Character();
+			$c->update($res);
+			array_push($list, $c);
+		}
+
+		$this->setCharacters($list);
 	}
 }
