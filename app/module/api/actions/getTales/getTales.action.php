@@ -19,7 +19,7 @@ class getTalesAction extends OAction {
 	 * @return void
 	 */
 	public function run(ORequest $req):void {
-		$tale_list_component = new TaleListComponent(['list' => $this->tales_service->getList()]);
+		$tale_list_component = new TaleListComponent(['list' => $this->tales_service->getList(true)]);
 		$this->getTemplate()->add('list', $tale_list_component);
 	}
 }

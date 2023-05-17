@@ -64,6 +64,13 @@ class Page extends OModel {
 				comment: 'Tipo de animación para la salida de la página'
 			),
 			new OModelField(
+				name: 'has_options',
+				type: OMODEL_BOOL,
+				nullable: false,
+				default: false,
+				comment: 'Indica si una pagina tiene opciones 1 o no 0'
+			),
+			new OModelField(
 				name: 'next_page',
 				type: OMODEL_NUM,
 				nullable: true,
@@ -130,5 +137,50 @@ class Page extends OModel {
 		}
 
 		$this->setDialogs($list);
+	}
+
+	private ?array $options = null;
+
+	/**
+	 * Obtiene el listado de opciones de una página
+	 *
+	 * @return array Listado de opciones
+	 */
+	public function getOptions(): array {
+		if (is_null($this->options)) {
+			$this->loadOptions();
+		}
+		return $this->options;
+	}
+
+	/**
+	 * Guarda la lista de opciones
+	 *
+	 * @param array $o Lista de opciones
+	 *
+	 * @return void
+	 */
+	public function setOptions(array $o): void {
+		$this->options = $o;
+	}
+
+	/**
+	 * Carga la lista de opciones de una página
+	 *
+	 * @return void
+	 */
+	public function loadOptions(): void {
+		$db = new ODB();
+		$sql = "SELECT * FROM `option` WHERE `id_page` = ? ORDER BY `option_order` ASC";
+		$db->query($sql, [$this->get('id')]);
+		$list = [];
+
+		while ($res=$db->next()) {
+			$o = new Option();
+			$o->update($res);
+			array_push($list, $o);
+		}
+
+		$this->setOptions($list);
 	}
 }

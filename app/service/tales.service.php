@@ -14,9 +14,11 @@ class talesService extends OService {
 	/**
 	 * Función para obtener la lista de cuentos
 	 *
+	 * @param bool $just_tales Indica si se deben cargar SOLO los cuentos
+	 *
 	 * @return array Lista de cuentos
 	 */
-	public function getList(): array {
+	public function getList(bool $just_tales = false): array {
 		$db = new ODB();
 		$sql = "SELECT * FROM `tale` ORDER BY `name` ASC";
 		$db->query($sql);
@@ -25,6 +27,10 @@ class talesService extends OService {
 		while ($res = $db->next()) {
 			$t = new Tale();
 			$t->update($res);
+			if ($just_tales) {
+				$t->setPages([]);
+				$t->setCharacters([]);
+			}
 			array_push($list, $t);
 		}
 

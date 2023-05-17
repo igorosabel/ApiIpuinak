@@ -7,13 +7,13 @@ use OsumiFramework\OFW\DB\OModelGroup;
 use OsumiFramework\OFW\DB\OModelField;
 use OsumiFramework\OFW\DB\ODB;
 
-class Dialog extends OModel {
+class Option extends OModel {
 	function __construct() {
 		$model = new OModelGroup(
 			new OModelField(
 				name: 'id',
 				type: OMODEL_PK,
-				comment: 'Id único de cada diálogo'
+				comment: 'Id único de cada opción'
 			),
 			new OModelField(
 				name: 'id_page',
@@ -23,23 +23,23 @@ class Dialog extends OModel {
 				comment: 'Id de la página a la que pertenece'
 			),
 			new OModelField(
-				name: 'id_character',
-				type: OMODEL_NUM,
-				nullable: true,
-				ref: 'character.id',
-				comment: 'Id del personaje que narra el dialogo'
-			),
-			new OModelField(
-				name: 'dialog_order',
+				name: 'option_order',
 				type: OMODEL_NUM,
 				nullable: false,
-				comment: 'Orden del diálogo en la página'
+				comment: 'Orden de la opcion entre las opciones de una pagina'
 			),
 			new OModelField(
 				name: 'content',
-				type: OMODEL_LONGTEXT,
+				type: OMODEL_TEXT,
 				nullable: false,
-				comment: 'Texto del dialogo'
+				size: 200,
+				comment: 'Texto de la opción'
+			),
+			new OModelField(
+				name: 'next_page',
+				type: OMODEL_NUM,
+				nullable: false,
+				comment: 'Pagina a la que lleva la opcion'
 			),
 			new OModelField(
 				name: 'created_at',
