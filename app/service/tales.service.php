@@ -4,7 +4,7 @@ namespace OsumiFramework\App\Service;
 
 use OsumiFramework\OFW\Core\OService;
 use OsumiFramework\OFW\DB\ODB;
-use OsumiFramework\App\Model\Venta;
+use OsumiFramework\App\Model\Tale;
 
 class talesService extends OService {
 	function __construct() {

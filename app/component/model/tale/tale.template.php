@@ -1,6 +1,7 @@
 <?php
 use OsumiFramework\App\Component\Model\PageListComponent;
 use OsumiFramework\App\Component\Model\CharacterListComponent;
+use OsumiFramework\App\Component\Model\BookmarkComponent;
 
 if (is_null($values['tale'])) {
 ?>
@@ -14,7 +15,8 @@ else {
 	"name": "<?php echo urlencode($values['tale']->get('name')) ?>",
 	"createdAt": "<?php echo $values['tale']->get('created_at', 'd/m/Y H:i:s') ?>",
 	"pages": [<?php echo new PageListComponent(['list' => $values['tale']->getPages()]) ?>],
-	"characters": [<?php echo new CharacterListComponent(['list' => $values['tale']->getCharacters()]) ?>]
+	"characters": [<?php echo new CharacterListComponent(['list' => $values['tale']->getCharacters()]) ?>],
+	"lastBookmark": <?php echo !is_null($values['tale']->getLastBookmark()) ? new BookmarkComponent(['bookmark' => $values['tale']->getLastBookmark()]) : 'null' ?>
 }
 <?php
 }

@@ -8,5 +8,9 @@
 	},
 	"base_url": "https://apiipuinak.osumi.es",
 	"default_title": "Ipuinak",
-	"log_level": "ALL"
+	"log_level": "ALL",
+	"dir": {
+		"characters_images": "/var/www/vhosts/osumi.es/apiipuinak.osumi.es/web/images/characters/",
+		"pages_images": "/var/www/vhosts/osumi.es/apiipuinak.osumi.es/web/images/pages/"
+	}
 }

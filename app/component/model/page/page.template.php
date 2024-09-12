@@ -1,5 +1,6 @@
 <?php
 use OsumiFramework\App\Component\Model\DialogListComponent;
+use OsumiFramework\App\Component\Model\OptionListComponent;
 
 if (is_null($values['page'])) {
 ?>
@@ -9,6 +10,7 @@ null
 else { ?>
 {
 	"id": <?php echo $values['page']->get('id') ?>,
+	"idTale": <?php echo $values['page']->get('id_tale') ?>,
 	"pageOrder": <?php echo $values['page']->get('page_order') ?>,
 	"hasImage": <?php echo $values['page']->get('has_image') ? 'true' : 'false' ?>,
 	"preloadImage": <?php echo $values['page']->get('preload_image') ? 'true' : 'false' ?>,
@@ -17,7 +19,8 @@ else { ?>
 	"animationOut": <?php echo $values['page']->get('animation_out') ?>,
 	"hasOptions": <?php echo $values['page']->get('has_options') ? 'true' : 'false' ?>,
 	"nextPage": <?php echo is_null($values['page']->get('next_page')) ? 'null' : urlencode($values['page']->get('next_page')) ?>,
-	"dialogs": [<?php echo new DialogListComponent(['list' => $values['page']->getDialogs()]) ?>]
+	"dialogs": [<?php echo new DialogListComponent(['list' => $values['page']->getDialogs()]) ?>],
+	"options": [<?php echo new OptionListComponent(['list' => $values['page']->getOptions()]) ?>]
 }
 <?php
 }

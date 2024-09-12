@@ -128,4 +128,48 @@ class Tale extends OModel {
 
 		$this->setCharacters($list);
 	}
+
+	private ?Bookmark $last_bookmark = null;
+	private bool $last_bookmark_checked = false;
+
+	/**
+	 * Obtiene el último marcapáginas de un cuento
+	 *
+	 * @return Bookmark Último marcapáginas, si lo hubiera
+	 */
+	public function getLastBookmark(): ?Bookmark {
+		if (!($this->last_bookmark_checked)) {
+			$this->loadLastBookmark();
+		}
+		return $this->last_bookmark;
+	}
+
+	/**
+	 * Guarda el último marcapáginas
+	 *
+	 * @param Bookmark $b Último marcapáginas
+	 *
+	 * @return void
+	 */
+	public function setLastBookmark(Bookmark $b): void {
+		$this->last_bookmark = $b;
+	}
+
+	/**
+	 * Carga el último marcapáginas de un cuento
+	 *
+	 * @return void
+	 */
+	public function loadLastBookmark(): void {
+		$db = new ODB();
+		$sql = "SELECT * FROM `bookmark` WHERE `id_tale` = ? ORDER BY `created_at` DESC LIMIT 0,1";
+		$db->query($sql, [$this->get('id')]);
+
+		if ($res=$db->next()) {
+			$b = new Bookmark();
+			$b->update($res);
+			$this->setLastBookmark($b);
+		}
+		$this->last_bookmark_checked = true;
+	}
 }
