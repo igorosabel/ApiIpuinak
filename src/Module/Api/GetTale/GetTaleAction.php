@@ -11,6 +11,10 @@ class GetTaleAction extends OAction {
   public string $status = 'ok';
   public ?TaleComponent $tale = null;
 
+  public function __construct() {
+    $this->tale = new TaleComponent(['Tale' => null]);
+  }
+
 	/**
 	 * Función para obtener el detalle de un cuento
 	 *
@@ -19,13 +23,12 @@ class GetTaleAction extends OAction {
 	 */
 	public function run(ORequest $req):void {
 		$id = $req->getParamInt('id');
-		$this->tale = new TaleComponent(['Tale' => null]);
 
 		if (is_null($id)) {
 			$this->status = 'error';
 		}
 
-		if ($this->status == 'ok') {
+		if ($this->status === 'ok') {
 			$t = new Tale();
 			if ($t->find(['id' => $id])) {
 				$this->tale->setValue('Tale', $t);

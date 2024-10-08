@@ -4,11 +4,19 @@ namespace Osumi\OsumiFramework\App\Module\Api\GetCharacters;
 
 use Osumi\OsumiFramework\Routing\OAction;
 use Osumi\OsumiFramework\Web\ORequest;
+use Osumi\OsumiFramework\App\Service\CharactersService;
 use Osumi\OsumiFramework\App\Component\Model\CharacterList\CharacterListComponent;
 
 class GetCharactersAction extends OAction {
+  private ?CharactersService $cs = null;
+
   public string $status = 'ok';
   public ?CharacterListComponent $list = null;
+
+  public function __construct() {
+    $this->cs = inject(CharactersService::class);
+    $this->list = new CharacterListComponent(['list' => []]);
+  }
 
 	/**
 	 * Función para obtener la lista de personajes de un cuento
@@ -18,14 +26,13 @@ class GetCharactersAction extends OAction {
 	 */
 	public function run(ORequest $req):void {
 		$id_tale = $req->getParamInt('idTale');
-		$this->list = new CharacterListComponent(['list' => []]);
 
 		if (is_null($id_tale)) {
 			$this->status = 'error';
 		}
 
-		if ($this->status == 'ok') {
-			$this->list->setValue('list', $this->service['Characters']->getList($id_tale));
+		if ($this->status === 'ok') {
+			$this->list->setValue('list', $this->cs->getList($id_tale));
 		}
 	}
 }

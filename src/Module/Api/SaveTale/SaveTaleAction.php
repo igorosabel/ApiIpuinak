@@ -24,7 +24,7 @@ class SaveTaleAction extends OAction {
 			$this->status = 'error';
 		}
 
-		if ($this->status == 'ok') {
+		if ($this->status === 'ok') {
 			$t = new Tale();
 			if (!is_null($this->id)) {
 				$t->find(['id' => $this->id]);

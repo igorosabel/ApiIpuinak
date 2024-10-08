@@ -4,10 +4,17 @@ namespace Osumi\OsumiFramework\App\Module\Api\GetTales;
 
 use Osumi\OsumiFramework\Routing\OAction;
 use Osumi\OsumiFramework\Web\ORequest;
+use Osumi\OsumiFramework\App\Service\TalesService;
 use Osumi\OsumiFramework\App\Component\Model\TaleList\TaleListComponent;
 
 class GetTalesAction extends OAction {
+  private ?TalesService $ts = null;
+
   public ?TaleListComponent $list = null;
+
+  public function __construct() {
+    $this->ts = inject(TalesService::class);
+  }
 
 	/**
 	 * Función para obtener la lista de cuentos
@@ -16,6 +23,6 @@ class GetTalesAction extends OAction {
 	 * @return void
 	 */
 	public function run(ORequest $req):void {
-		$this->list = new TaleListComponent(['list' => $this->service['Tales']->getList(true)]);
+		$this->list = new TaleListComponent(['list' => $this->ts->getList(true)]);
 	}
 }
