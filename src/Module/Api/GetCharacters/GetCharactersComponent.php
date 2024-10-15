@@ -2,20 +2,21 @@
 
 namespace Osumi\OsumiFramework\App\Module\Api\GetCharacters;
 
-use Osumi\OsumiFramework\Routing\OAction;
+use Osumi\OsumiFramework\Core\OComponent;
 use Osumi\OsumiFramework\Web\ORequest;
 use Osumi\OsumiFramework\App\Service\CharactersService;
 use Osumi\OsumiFramework\App\Component\Model\CharacterList\CharacterListComponent;
 
-class GetCharactersAction extends OAction {
+class GetCharactersComponent extends OComponent {
   private ?CharactersService $cs = null;
 
   public string $status = 'ok';
   public ?CharacterListComponent $list = null;
 
   public function __construct() {
+    parent::__construct();
     $this->cs = inject(CharactersService::class);
-    $this->list = new CharacterListComponent(['list' => []]);
+    $this->list = new CharacterListComponent();
   }
 
 	/**
@@ -32,7 +33,7 @@ class GetCharactersAction extends OAction {
 		}
 
 		if ($this->status === 'ok') {
-			$this->list->setValue('list', $this->cs->getList($id_tale));
+			$this->list->list = $this->cs->getList($id_tale);
 		}
 	}
 }

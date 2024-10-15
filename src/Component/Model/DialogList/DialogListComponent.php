@@ -4,4 +4,6 @@ namespace Osumi\OsumiFramework\App\Component\Model\DialogList;
 
 use Osumi\OsumiFramework\Core\OComponent;
 
-class DialogListComponent extends OComponent {}
+class DialogListComponent extends OComponent {
+  public array $list = [];
+}

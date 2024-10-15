@@ -2,17 +2,18 @@
 
 namespace Osumi\OsumiFramework\App\Module\Api\GetTale;
 
-use Osumi\OsumiFramework\Routing\OAction;
+use Osumi\OsumiFramework\Core\OComponent;
 use Osumi\OsumiFramework\Web\ORequest;
 use Osumi\OsumiFramework\App\Model\Tale;
 use Osumi\OsumiFramework\App\Component\Model\Tale\TaleComponent;
 
-class GetTaleAction extends OAction {
+class GetTaleComponent extends OComponent {
   public string $status = 'ok';
   public ?TaleComponent $tale = null;
 
   public function __construct() {
-    $this->tale = new TaleComponent(['Tale' => null]);
+    parent::__construct();
+    $this->tale = new TaleComponent();
   }
 
 	/**
@@ -31,7 +32,7 @@ class GetTaleAction extends OAction {
 		if ($this->status === 'ok') {
 			$t = new Tale();
 			if ($t->find(['id' => $id])) {
-				$this->tale->setValue('Tale', $t);
+				$this->tale->tale = $t;
 			}
 			else {
 				$this->status = 'error';

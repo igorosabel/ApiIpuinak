@@ -1,11 +1,11 @@
-<?php if (is_null($values['Option'])): ?>
+<?php if (is_null($option)): ?>
 null
 <?php else: ?>
 {
-	"id": <?php echo $values['Option']->get('id') ?>,
-	"idPage": <?php echo $values['Option']->get('id_page') ?>,
-	"optionOrder": <?php echo $values['Option']->get('option_order') ?>,
-	"content": "<?php echo urlencode($values['Option']->get('content')) ?>",
-	"nextPage": <?php echo $values['Option']->get('next_page') ?>
+	"id": <?php echo $option->get('id') ?>,
+	"idPage": <?php echo $option->get('id_page') ?>,
+	"optionOrder": <?php echo $option->get('option_order') ?>,
+	"content": "<?php echo urlencode($option->get('content')) ?>",
+	"nextPage": <?php echo $option->get('next_page') ?>
 }
 <?php endif ?>

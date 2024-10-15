@@ -2,17 +2,18 @@
 
 namespace Osumi\OsumiFramework\App\Module\Api\GetTales;
 
-use Osumi\OsumiFramework\Routing\OAction;
+use Osumi\OsumiFramework\Core\OComponent;
 use Osumi\OsumiFramework\Web\ORequest;
 use Osumi\OsumiFramework\App\Service\TalesService;
 use Osumi\OsumiFramework\App\Component\Model\TaleList\TaleListComponent;
 
-class GetTalesAction extends OAction {
+class GetTalesComponent extends OComponent {
   private ?TalesService $ts = null;
 
   public ?TaleListComponent $list = null;
 
   public function __construct() {
+    parent::__construct();
     $this->ts = inject(TalesService::class);
   }
 

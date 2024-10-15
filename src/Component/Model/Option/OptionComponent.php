@@ -3,5 +3,8 @@
 namespace Osumi\OsumiFramework\App\Component\Model\Option;
 
 use Osumi\OsumiFramework\Core\OComponent;
+use Osumi\OsumiFramework\App\Model\Option;
 
-class OptionComponent extends OComponent {}
+class OptionComponent extends OComponent {
+  public ?Option $option = null;
+}

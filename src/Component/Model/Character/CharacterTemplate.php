@@ -1,11 +1,11 @@
-<?php if (is_null($values['Character'])): ?>
+<?php if (is_null($character)): ?>
 null
 <?php else: ?>
 {
-	"id": <?php echo $values['Character']->get('id') ?>,
-	"idTale": <?php echo $values['Character']->get('id_tale') ?>,
-	"name": "<?php echo urlencode($values['Character']->get('name')) ?>",
-	"hasImage": <?php echo $values['Character']->get('has_image') ? 'true' : 'false' ?>,
-	"color": "<?php echo is_null($values['Character']->get('color')) ? 'null' : urlencode($values['Character']->get('color')) ?>"
+	"id": <?php echo $character->get('id') ?>,
+	"idTale": <?php echo $character->get('id_tale') ?>,
+	"name": "<?php echo urlencode($character->get('name')) ?>",
+	"hasImage": <?php echo $character->get('has_image') ? 'true' : 'false' ?>,
+	"color": "<?php echo is_null($character->get('color')) ? 'null' : urlencode($character->get('color')) ?>"
 }
 <?php endif ?>

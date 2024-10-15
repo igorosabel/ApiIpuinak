@@ -2,11 +2,11 @@
 
 namespace Osumi\OsumiFramework\App\Module\Api\SaveTale;
 
-use Osumi\OsumiFramework\Routing\OAction;
+use Osumi\OsumiFramework\Core\OComponent;
 use Osumi\OsumiFramework\Web\ORequest;
 use Osumi\OsumiFramework\App\Model\Tale;
 
-class SaveTaleAction extends OAction {
+class SaveTaleComponent extends OComponent {
   public string $status = 'ok';
   public string | int | null $id = 'null';
 

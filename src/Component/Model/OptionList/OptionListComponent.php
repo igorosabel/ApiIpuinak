@@ -4,4 +4,6 @@ namespace Osumi\OsumiFramework\App\Component\Model\OptionList;
 
 use Osumi\OsumiFramework\Core\OComponent;
 
-class OptionListComponent extends OComponent {}
+class OptionListComponent extends OComponent {
+  public array $list = [];
+}

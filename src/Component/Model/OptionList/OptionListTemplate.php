@@ -1,10 +1,10 @@
 <?php
 use Osumi\OsumiFramework\App\Component\Model\Option\OptionComponent;
 
-foreach ($values['list'] as $i => $Option) {
-  $component = new OptionComponent([ 'Option' => $Option ]);
+foreach ($list as $i => $option) {
+  $component = new OptionComponent([ 'option' => $option ]);
 	echo strval($component);
-	if ($i<count($values['list'])-1) {
+	if ($i < count($list) - 1) {
 		echo ",\n";
 	}
 }

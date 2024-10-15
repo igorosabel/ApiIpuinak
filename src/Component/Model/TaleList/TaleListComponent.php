@@ -4,4 +4,6 @@ namespace Osumi\OsumiFramework\App\Component\Model\TaleList;
 
 use Osumi\OsumiFramework\Core\OComponent;
 
-class TaleListComponent extends OComponent {}
+class TaleListComponent extends OComponent {
+  public array $list = [];
+}

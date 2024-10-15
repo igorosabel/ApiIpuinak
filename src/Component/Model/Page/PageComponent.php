@@ -3,5 +3,8 @@
 namespace Osumi\OsumiFramework\App\Component\Model\Page;
 
 use Osumi\OsumiFramework\Core\OComponent;
+use Osumi\OsumiFramework\App\Model\Page;
 
-class PageComponent extends OComponent {}
+class PageComponent extends OComponent {
+  public ?Page $page = null;
+}

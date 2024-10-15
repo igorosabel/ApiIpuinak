@@ -1,10 +1,10 @@
 <?php
 use Osumi\OsumiFramework\App\Component\Model\Bookmark\BookmarkComponent;
 
-foreach ($values['list'] as $i => $Bookmark) {
-  $component = new BookmarkComponent([ 'Bookmark' => $Bookmark ]);
+foreach ($list as $i => $bookmark) {
+  $component = new BookmarkComponent([ 'bookmark' => $bookmark ]);
 	echo strval($component);
-	if ($i<count($values['list'])-1) {
+	if ($i < count($list) - 1) {
 		echo ",\n";
 	}
 }

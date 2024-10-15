@@ -3,16 +3,16 @@
 namespace Osumi\OsumiFramework\Routes;
 
 use Osumi\OsumiFramework\Routing\ORoute;
-use Osumi\OsumiFramework\App\Module\Api\GetCharacters\GetCharactersAction;
-use Osumi\OsumiFramework\App\Module\Api\GetTale\GetTaleAction;
-use Osumi\OsumiFramework\App\Module\Api\GetTales\GetTalesAction;
-use Osumi\OsumiFramework\App\Module\Api\SaveCharacter\SaveCharacterAction;
-use Osumi\OsumiFramework\App\Module\Api\SaveTale\SaveTaleAction;
+use Osumi\OsumiFramework\App\Module\Api\GetCharacters\GetCharactersComponent;
+use Osumi\OsumiFramework\App\Module\Api\GetTale\GetTaleComponent;
+use Osumi\OsumiFramework\App\Module\Api\GetTales\GetTalesComponent;
+use Osumi\OsumiFramework\App\Module\Api\SaveCharacter\SaveCharacterComponent;
+use Osumi\OsumiFramework\App\Module\Api\SaveTale\SaveTaleComponent;
 
-ORoute::group('/api', 'json', function() {
-  ORoute::post('/get-characters', GetCharactersAction::class);
-  ORoute::post('/get-tale',       GetTaleAction::class);
-  ORoute::post('/get-tales',      GetTalesAction::class);
-  ORoute::post('/save-character', SaveCharacterAction::class);
-  ORoute::post('/save-tale',      SaveTaleAction::class);
+ORoute::prefix('/api', function() {
+  ORoute::post('/get-characters', GetCharactersComponent::class);
+  ORoute::post('/get-tale',       GetTaleComponent::class);
+  ORoute::post('/get-tales',      GetTalesComponent::class);
+  ORoute::post('/save-character', SaveCharacterComponent::class);
+  ORoute::post('/save-tale',      SaveTaleComponent::class);
 });
