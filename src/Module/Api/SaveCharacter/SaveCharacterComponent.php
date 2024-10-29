@@ -25,7 +25,7 @@ class SaveCharacterComponent extends OComponent {
 	 * @param CharacterDTO $data Objeto con la información de un personaje
 	 * @return void
 	 */
-	public function run(CharacterDTO $data):void {
+	public function run(CharacterDTO $data): void {
 		if (!$data->isValid()) {
 			$this->status = 'error';
 		}

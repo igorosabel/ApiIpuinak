@@ -25,13 +25,13 @@ class SaveTaleComponent extends OComponent {
 		}
 
 		if ($this->status === 'ok') {
-			$t = new Tale();
+			$t = Tale::create();
 			if (!is_null($this->id)) {
-				$t->find(['id' => $this->id]);
+        $t = Tale::findOne(['id' => $this->id]);
 			}
-			$t->set('name', urldecode($name));
+			$t->name = urldecode($name);
 			$t->save();
-			$this->id = $t->get('id');
+			$this->id = $t->id;
 		}
 	}
 }

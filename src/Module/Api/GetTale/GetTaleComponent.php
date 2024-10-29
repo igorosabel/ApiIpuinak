@@ -22,7 +22,7 @@ class GetTaleComponent extends OComponent {
 	 * @param ORequest $req Request object with method, headers, parameters and filters used
 	 * @return void
 	 */
-	public function run(ORequest $req):void {
+	public function run(ORequest $req): void {
 		$id = $req->getParamInt('id');
 
 		if (is_null($id)) {
@@ -30,8 +30,8 @@ class GetTaleComponent extends OComponent {
 		}
 
 		if ($this->status === 'ok') {
-			$t = new Tale();
-			if ($t->find(['id' => $id])) {
+			$t = Tale::findOne(['id' => $id]);
+			if (!is_null($t)) {
 				$this->tale->tale = $t;
 			}
 			else {

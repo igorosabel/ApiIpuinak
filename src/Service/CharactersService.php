@@ -3,17 +3,12 @@
 namespace Osumi\OsumiFramework\App\Service;
 
 use Osumi\OsumiFramework\Core\OService;
-use Osumi\OsumiFramework\DB\ODB;
 use Osumi\OsumiFramework\Plugins\OImage;
 use Osumi\OsumiFramework\App\Component\Model\CharacterComponent;
 use Osumi\OsumiFramework\App\Model\Character;
 use Osumi\OsumiFramework\App\DTO\CharacterDTO;
 
 class CharactersService extends OService {
-	function __construct() {
-		$this->loadService();
-	}
-
 	/**
 	 * Función para obtener la lista de personajes de un cuento
 	 *
@@ -22,18 +17,7 @@ class CharactersService extends OService {
 	 * @return array Lista de personajes
 	 */
 	public function getList(int $id_tale): array {
-		$db = new ODB();
-		$sql = "SELECT * FROM `character` WHERE `id_tale` = ? ORDER BY `name` ASC";
-		$db->query($sql, [$id_tale]);
-		$list = [];
-
-		while ($res = $db->next()) {
-			$c = new Character();
-			$c->update($res);
-			array_push($list, $c);
-		}
-
-		return $list;
+		return Character::where(['id_tale' => $id_tale], ['order_by' => 'name#asc']);
 	}
 
 	/**
@@ -42,19 +26,19 @@ class CharactersService extends OService {
 	 * @param CharacterDTO $data Objeto con la información de un personaje
 	 */
 	public function saveCharacter(CharacterDTO $data): Character {
-		$c = new Character();
-		if (!is_null($data->getId())) {
-			$c->find(['id' => $data->getId()]);
+		$c = Character::create();
+		if (!is_null($data->id)) {
+			$c = Character::findOne(['id' => $data->id]);
 		}
 
-		$c->set('id_tale', $data->getIdTale());
-		$c->set('name', urldecode($data->getName()));
-		$c->set('has_image', $data->getHasImage());
-		$c->set('color', str_ireplace('#', '', $data->getColor()));
+		$c->id_tale   = $data->id_tale;
+		$c->name      = urldecode($data->name);
+		$c->has_image = $data->has_image;
+		$c->color     = str_ireplace('#', '', $data->color);
 		$c->save();
 
-		if (!is_null($data->getData())) {
-			$this->saveCharacterImage($data->getData(), $c->get('id'));
+		if (!is_null($data->data)) {
+			$this->saveCharacterImage($data->data, $c->id);
 		}
 
 		return $c;
@@ -89,7 +73,7 @@ class CharactersService extends OService {
 	 * @return string Devuelve la ruta completa a la nueva imagen
 	 */
 	public function saveImage(string $dir, string $base64_string, int $id, string $ext): string {
-		$ruta = $dir.$id.'.'.$ext;
+		$ruta = $dir . $id . '.' . $ext;
 
 		if (file_exists($ruta)) {
 			unlink($ruta);
@@ -125,7 +109,7 @@ class CharactersService extends OService {
 		}
 
 		// Guardo la imagen ya modificada como WebP
-		$im->save($this->getConfig()->getDir('characters_images').$id.'.webp', IMAGETYPE_WEBP);
+		$im->save($this->getConfig()->getDir('characters_images') . $id . '.webp', IMAGETYPE_WEBP);
 
 		// Borro la imagen temporal
 		unlink($ruta);

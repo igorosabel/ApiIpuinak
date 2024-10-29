@@ -2,61 +2,54 @@
 
 namespace Osumi\OsumiFramework\App\Model;
 
-use Osumi\OsumiFramework\DB\OModel;
-use Osumi\OsumiFramework\DB\OModelGroup;
-use Osumi\OsumiFramework\DB\OModelField;
+use Osumi\OsumiFramework\ORM\OModel;
+use Osumi\OsumiFramework\ORM\OPK;
+use Osumi\OsumiFramework\ORM\OField;
+use Osumi\OsumiFramework\ORM\OCreatedAt;
+use Osumi\OsumiFramework\ORM\OUpdatedAt;
 
 class Character extends OModel {
-	function __construct() {
-		$model = new OModelGroup(
-			new OModelField(
-				name: 'id',
-				type: OMODEL_PK,
-				comment: 'Id único de cada personaje'
-			),
-			new OModelField(
-				name: 'id_tale',
-				type: OMODEL_NUM,
-				nullable: false,
-				ref: 'tale.id',
-				comment: 'Id del cuento al que pertenece'
-			),
-			new OModelField(
-				name: 'name',
-				type: OMODEL_TEXT,
-				nullable: false,
-				size: 50,
-				comment: 'Nombre del personaje'
-			),
-			new OModelField(
-				name: 'has_image',
-				type: OMODEL_BOOL,
-				nullable: false,
-				default: false,
-				comment: 'Indica si el personaje tiene una imagen 1 o no 0'
-			),
-			new OModelField(
-				name: 'color',
-				type: OMODEL_TEXT,
-				nullable: true,
-				default: null,
-				size: 6,
-				comment: 'Color para los textos del personaje'
-			),
-			new OModelField(
-				name: 'created_at',
-				type: OMODEL_CREATED,
-				comment: 'Fecha de creación del registro'
-			),
-			new OModelField(
-				name: 'updated_at',
-				type: OMODEL_UPDATED,
-				nullable: true,
-				default: null,
-				comment: 'Fecha de última modificación del registro'
-			)
-		);
+	#[OPK(
+	  comment: 'Id único de cada personaje'
+	)]
+	public ?int $id;
 
-		parent::load($model);
-	}
+	#[OField(
+	  comment: 'Id del cuento al que pertenece',
+	  nullable: false,
+	  ref: 'tale.id'
+	)]
+	public ?int $id_tale;
+
+	#[OField(
+	  comment: 'Nombre del personaje',
+	  nullable: false,
+	  max: 50
+	)]
+	public ?string $name;
+
+	#[OField(
+	  comment: 'Indica si el personaje tiene una imagen 1 o no 0',
+	  nullable: false,
+	  default: false
+	)]
+	public ?bool $has_image;
+
+	#[OField(
+	  comment: 'Color para los textos del personaje',
+	  nullable: true,
+	  max: 6,
+	  default: null
+	)]
+	public ?string $color;
+
+	#[OCreatedAt(
+	  comment: 'Fecha de creación del registro'
+	)]
+	public ?string $created_at;
+
+	#[OUpdatedAt(
+	  comment: 'Fecha de última modificación del registro'
+	)]
+	public ?string $updated_at;
 }

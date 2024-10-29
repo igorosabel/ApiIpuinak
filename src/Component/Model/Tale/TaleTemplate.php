@@ -7,8 +7,8 @@ use Osumi\OsumiFramework\App\Component\Model\Bookmark\BookmarkComponent;
 null
 <?php else: ?>
 {
-	"id": <?php echo $tale->get('id') ?>,
-	"name": "<?php echo urlencode($tale->get('name')) ?>",
+	"id": <?php echo $tale->id ?>,
+	"name": "<?php echo urlencode($tale->name) ?>",
 	"createdAt": "<?php echo $tale->get('created_at', 'd/m/Y H:i:s') ?>",
 	"pages": [<?php echo new PageListComponent(['list' => $tale->getPages()]) ?>],
 	"characters": [<?php echo new CharacterListComponent(['list' => $tale->getCharacters()]) ?>],

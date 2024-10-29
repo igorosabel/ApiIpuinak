@@ -2,99 +2,91 @@
 
 namespace Osumi\OsumiFramework\App\Model;
 
-use Osumi\OsumiFramework\DB\OModel;
-use Osumi\OsumiFramework\DB\OModelGroup;
-use Osumi\OsumiFramework\DB\OModelField;
-use Osumi\OsumiFramework\DB\ODB;
+use Osumi\OsumiFramework\ORM\OModel;
+use Osumi\OsumiFramework\ORM\OPK;
+use Osumi\OsumiFramework\ORM\OField;
+use Osumi\OsumiFramework\ORM\OCreatedAt;
+use Osumi\OsumiFramework\ORM\OUpdatedAt;
 use Osumi\OsumiFramework\App\Model\Dialog;
 use Osumi\OsumiFramework\App\Model\Option;
 
 class Page extends OModel {
-	function __construct() {
-		$model = new OModelGroup(
-			new OModelField(
-				name: 'id',
-				type: OMODEL_PK,
-				comment: 'Id único de cada página'
-			),
-			new OModelField(
-				name: 'id_tale',
-				type: OMODEL_NUM,
-				nullable: false,
-				ref: 'tale.id',
-				comment: 'Id del cuento al que pertenece'
-			),
-			new OModelField(
-				name: 'page_order',
-				type: OMODEL_NUM,
-				nullable: false,
-				comment: 'Orden de la página en el cuento'
-			),
-			new OModelField(
-				name: 'has_image',
-				type: OMODEL_BOOL,
-				nullable: false,
-				default: false,
-				comment: 'Indica si la página tiene una imagen de fondo 1 o no 0'
-			),
-			new OModelField(
-				name: 'preload_image',
-				type: OMODEL_BOOL,
-				nullable: false,
-				default: false,
-				comment: 'Indica si la imagen debe precargarse 1 o no 0'
-			),
-			new OModelField(
-				name: 'bg_color',
-				type: OMODEL_TEXT,
-				nullable: true,
-				default: null,
-				comment: 'Color de fondo de la pagina'
-			),
-			new OModelField(
-				name: 'animation_in',
-				type: OMODEL_NUM,
-				nullable: false,
-				default: 0,
-				comment: 'Tipo de animación para la entrada de la página'
-			),
-			new OModelField(
-				name: 'animation_out',
-				type: OMODEL_NUM,
-				nullable: false,
-				default: 0,
-				comment: 'Tipo de animación para la salida de la página'
-			),
-			new OModelField(
-				name: 'has_options',
-				type: OMODEL_BOOL,
-				nullable: false,
-				default: false,
-				comment: 'Indica si una pagina tiene opciones 1 o no 0'
-			),
-			new OModelField(
-				name: 'next_page',
-				type: OMODEL_NUM,
-				nullable: true,
-				default: null,
-				comment: 'Indica cual es la siguiente pagina'
-			),
-			new OModelField(
-				name: 'created_at',
-				type: OMODEL_CREATED,
-				comment: 'Fecha de creación del registro'
-			),
-			new OModelField(
-				name: 'updated_at',
-				type: OMODEL_UPDATED,
-				nullable: true,
-				default: null,
-				comment: 'Fecha de última modificación del registro'
-			)
-		);
+	#[OPK(
+	  comment: 'Id único de cada página'
+	)]
+	public ?int $id;
 
-		parent::load($model);
-	}
+	#[OField(
+	  comment: 'Id del cuento al que pertenece',
+	  nullable: false,
+	  ref: 'tale.id'
+	)]
+	public ?int $id_tale;
+
+	#[OField(
+	  comment: 'Orden de la página en el cuento',
+	  nullable: false
+	)]
+	public ?int $page_order;
+
+	#[OField(
+	  comment: 'Indica si la página tiene una imagen de fondo 1 o no 0',
+	  nullable: false,
+	  default: false
+	)]
+	public ?bool $has_image;
+
+	#[OField(
+	  comment: 'Indica si la imagen debe precargarse 1 o no 0',
+	  nullable: false,
+	  default: false
+	)]
+	public ?bool $preload_image;
+
+	#[OField(
+	  comment: 'Color de fondo de la pagina',
+	  nullable: true,
+	  default: null
+	)]
+	public ?string $bg_color;
+
+	#[OField(
+	  comment: 'Tipo de animación para la entrada de la página',
+	  nullable: false,
+	  default: 0
+	)]
+	public ?int $animation_in;
+
+	#[OField(
+	  comment: 'Tipo de animación para la salida de la página',
+	  nullable: false,
+	  default: 0
+	)]
+	public ?int $animation_out;
+
+	#[OField(
+	  comment: 'Indica si una pagina tiene opciones 1 o no 0',
+	  nullable: false,
+	  default: false
+	)]
+	public ?bool $has_options;
+
+	#[OField(
+	  comment: 'Indica cual es la siguiente pagina',
+	  nullable: true,
+	  default: null
+	)]
+	public ?int $next_page;
+
+	#[OCreatedAt(
+	  comment: 'Fecha de creación del registro'
+	)]
+	public ?string $created_at;
+
+	#[OUpdatedAt(
+	  comment: 'Fecha de última modificación del registro'
+	)]
+	public ?string $updated_at;
 
 	private ?array $dialogs = null;
 
@@ -127,17 +119,7 @@ class Page extends OModel {
 	 * @return void
 	 */
 	public function loadDialogs(): void {
-		$db = new ODB();
-		$sql = "SELECT * FROM `dialog` WHERE `id_page` = ? ORDER BY `dialog_order` ASC";
-		$db->query($sql, [$this->get('id')]);
-		$list = [];
-
-		while ($res=$db->next()) {
-			$d = new Dialog();
-			$d->update($res);
-			array_push($list, $d);
-		}
-
+		$list = Dialog::where(['id_page' => $this->id], ['order_by' => 'dialog_order#asc']);
 		$this->setDialogs($list);
 	}
 
@@ -172,17 +154,7 @@ class Page extends OModel {
 	 * @return void
 	 */
 	public function loadOptions(): void {
-		$db = new ODB();
-		$sql = "SELECT * FROM `option` WHERE `id_page` = ? ORDER BY `option_order` ASC";
-		$db->query($sql, [$this->get('id')]);
-		$list = [];
-
-		while ($res=$db->next()) {
-			$o = new Option();
-			$o->update($res);
-			array_push($list, $o);
-		}
-
+		$list = Option::where(['id_page' => $this->id], ['order_by' => 'option_order#asc']);
 		$this->setOptions($list);
 	}
 }

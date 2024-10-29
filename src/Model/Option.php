@@ -2,58 +2,51 @@
 
 namespace Osumi\OsumiFramework\App\Model;
 
-use Osumi\OsumiFramework\DB\OModel;
-use Osumi\OsumiFramework\DB\OModelGroup;
-use Osumi\OsumiFramework\DB\OModelField;
+use Osumi\OsumiFramework\ORM\OModel;
+use Osumi\OsumiFramework\ORM\OPK;
+use Osumi\OsumiFramework\ORM\OField;
+use Osumi\OsumiFramework\ORM\OCreatedAt;
+use Osumi\OsumiFramework\ORM\OUpdatedAt;
 
 class Option extends OModel {
-	function __construct() {
-		$model = new OModelGroup(
-			new OModelField(
-				name: 'id',
-				type: OMODEL_PK,
-				comment: 'Id único de cada opción'
-			),
-			new OModelField(
-				name: 'id_page',
-				type: OMODEL_NUM,
-				nullable: false,
-				ref: 'page.id',
-				comment: 'Id de la página a la que pertenece'
-			),
-			new OModelField(
-				name: 'option_order',
-				type: OMODEL_NUM,
-				nullable: false,
-				comment: 'Orden de la opcion entre las opciones de una pagina'
-			),
-			new OModelField(
-				name: 'content',
-				type: OMODEL_TEXT,
-				nullable: false,
-				size: 200,
-				comment: 'Texto de la opción'
-			),
-			new OModelField(
-				name: 'next_page',
-				type: OMODEL_NUM,
-				nullable: false,
-				comment: 'Pagina a la que lleva la opcion'
-			),
-			new OModelField(
-				name: 'created_at',
-				type: OMODEL_CREATED,
-				comment: 'Fecha de creación del registro'
-			),
-			new OModelField(
-				name: 'updated_at',
-				type: OMODEL_UPDATED,
-				nullable: true,
-				default: null,
-				comment: 'Fecha de última modificación del registro'
-			)
-		);
+	#[OPK(
+	  comment: 'Id único de cada opción'
+	)]
+	public ?int $id;
 
-		parent::load($model);
-	}
+	#[OField(
+	  comment: 'Id de la página a la que pertenece',
+	  nullable: false,
+	  ref: 'page.id'
+	)]
+	public ?int $id_page;
+
+	#[OField(
+	  comment: 'Orden de la opcion entre las opciones de una pagina',
+	  nullable: false
+	)]
+	public ?int $option_order;
+
+	#[OField(
+	  comment: 'Texto de la opción',
+	  nullable: false,
+	  max: 200
+	)]
+	public ?string $content;
+
+	#[OField(
+	  comment: 'Pagina a la que lleva la opcion',
+	  nullable: false
+	)]
+	public ?int $next_page;
+
+	#[OCreatedAt(
+	  comment: 'Fecha de creación del registro'
+	)]
+	public ?string $created_at;
+
+	#[OUpdatedAt(
+	  comment: 'Fecha de última modificación del registro'
+	)]
+	public ?string $updated_at;
 }

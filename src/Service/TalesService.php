@@ -3,14 +3,9 @@
 namespace Osumi\OsumiFramework\App\Service;
 
 use Osumi\OsumiFramework\Core\OService;
-use Osumi\OsumiFramework\DB\ODB;
 use Osumi\OsumiFramework\App\Model\Tale;
 
 class TalesService extends OService {
-	function __construct() {
-		$this->loadService();
-	}
-
 	/**
 	 * Función para obtener la lista de cuentos
 	 *
@@ -19,19 +14,15 @@ class TalesService extends OService {
 	 * @return array Lista de cuentos
 	 */
 	public function getList(bool $just_tales = false): array {
-		$db = new ODB();
-		$sql = "SELECT * FROM `tale` ORDER BY `name` ASC";
-		$db->query($sql);
-		$list = [];
+		$tales = Tale::all(['order_by' => 'name#asc']);
+		$list  = [];
 
-		while ($res = $db->next()) {
-			$t = new Tale();
-			$t->update($res);
+		foreach ($tales as $t) {
 			if ($just_tales) {
 				$t->setPages([]);
 				$t->setCharacters([]);
 			}
-			array_push($list, $t);
+			$list[] = $t;
 		}
 
 		return $list;

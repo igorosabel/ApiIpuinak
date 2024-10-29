@@ -2,45 +2,37 @@
 
 namespace Osumi\OsumiFramework\App\Model;
 
-use Osumi\OsumiFramework\DB\OModel;
-use Osumi\OsumiFramework\DB\OModelGroup;
-use Osumi\OsumiFramework\DB\OModelField;
-use Osumi\OsumiFramework\DB\ODB;
+use Osumi\OsumiFramework\ORM\OModel;
+use Osumi\OsumiFramework\ORM\OPK;
+use Osumi\OsumiFramework\ORM\OField;
+use Osumi\OsumiFramework\ORM\OCreatedAt;
+use Osumi\OsumiFramework\ORM\OUpdatedAt;
 use Osumi\OsumiFramework\App\Model\Page;
 use Osumi\OsumiFramework\App\Model\Character;
 use Osumi\OsumiFramework\App\Model\Bookmark;
 
 class Tale extends OModel {
-	function __construct() {
-		$model = new OModelGroup(
-			new OModelField(
-				name: 'id',
-				type: OMODEL_PK,
-				comment: 'Id único de cada cuento'
-			),
-			new OModelField(
-				name: 'name',
-				type: OMODEL_TEXT,
-				nullable: false,
-				size: 50,
-				comment: 'Nombre del cuento'
-			),
-			new OModelField(
-				name: 'created_at',
-				type: OMODEL_CREATED,
-				comment: 'Fecha de creación del registro'
-			),
-			new OModelField(
-				name: 'updated_at',
-				type: OMODEL_UPDATED,
-				nullable: true,
-				default: null,
-				comment: 'Fecha de última modificación del registro'
-			)
-		);
+	#[OPK(
+	  comment: 'Id único de cada cuento'
+	)]
+	public ?int $id;
 
-		parent::load($model);
-	}
+	#[OField(
+	  comment: 'Nombre del cuento',
+	  nullable: false,
+	  max: 50
+	)]
+	public ?string $name;
+
+	#[OCreatedAt(
+	  comment: 'Fecha de creación del registro'
+	)]
+	public ?string $created_at;
+
+	#[OUpdatedAt(
+	  comment: 'Fecha de última modificación del registro'
+	)]
+	public ?string $updated_at;
 
 	private ?array $pages = null;
 
@@ -73,17 +65,7 @@ class Tale extends OModel {
 	 * @return void
 	 */
 	public function loadPages(): void {
-		$db = new ODB();
-		$sql = "SELECT * FROM `page` WHERE `id_tale` = ? ORDER BY `page_order` ASC";
-		$db->query($sql, [$this->get('id')]);
-		$list = [];
-
-		while ($res=$db->next()) {
-			$p = new Page();
-			$p->update($res);
-			array_push($list, $p);
-		}
-
+		$list = Page::where(['id_tale' => $this->id], ['order_by' => 'page_order#asc']);
 		$this->setPages($list);
 	}
 
@@ -118,17 +100,7 @@ class Tale extends OModel {
 	 * @return void
 	 */
 	public function loadCharacters(): void {
-		$db = new ODB();
-		$sql = "SELECT * FROM `character` WHERE `id_tale` = ? ORDER BY `name` ASC";
-		$db->query($sql, [$this->get('id')]);
-		$list = [];
-
-		while ($res=$db->next()) {
-			$c = new Character();
-			$c->update($res);
-			array_push($list, $c);
-		}
-
+		$list = Character::where(['id_tale' => $this->id], ['order_by' => 'name#asc']);
 		$this->setCharacters($list);
 	}
 
@@ -164,14 +136,9 @@ class Tale extends OModel {
 	 * @return void
 	 */
 	public function loadLastBookmark(): void {
-		$db = new ODB();
-		$sql = "SELECT * FROM `bookmark` WHERE `id_tale` = ? ORDER BY `created_at` DESC LIMIT 0,1";
-		$db->query($sql, [$this->get('id')]);
-
-		if ($res=$db->next()) {
-			$b = new Bookmark();
-			$b->update($res);
-			$this->setLastBookmark($b);
+		$list = Bookmark::where(['id_tale' => $this->id], ['order_by' => 'created_at#asc', 'limit' => '0#1']);
+		if (count($list) > 0) {
+			$this->setLastBookmark($list[0]);
 		}
 		$this->last_bookmark_checked = true;
 	}

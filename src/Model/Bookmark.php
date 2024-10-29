@@ -2,60 +2,53 @@
 
 namespace Osumi\OsumiFramework\App\Model;
 
-use Osumi\OsumiFramework\DB\OModel;
-use Osumi\OsumiFramework\DB\OModelGroup;
-use Osumi\OsumiFramework\DB\OModelField;
+use Osumi\OsumiFramework\ORM\OModel;
+use Osumi\OsumiFramework\ORM\OPK;
+use Osumi\OsumiFramework\ORM\OField;
+use Osumi\OsumiFramework\ORM\OCreatedAt;
+use Osumi\OsumiFramework\ORM\OUpdatedAt;
 
 class Bookmark extends OModel {
-	function __construct() {
-		$model = new OModelGroup(
-			new OModelField(
-				name: 'id',
-				type: OMODEL_PK,
-				comment: 'Id único de cada marcapáginas'
-			),
-			new OModelField(
-				name: 'id_tale',
-				type: OMODEL_NUM,
-				nullable: false,
-				ref: 'tale.id',
-				comment: 'Id del cuento en el que esta el marcapáginas'
-			),
-			new OModelField(
-				name: 'id_page',
-				type: OMODEL_NUM,
-				nullable: false,
-				ref: 'page.id',
-				comment: 'Id de la página en la que esta el marcapaginas'
-			),
-			new OModelField(
-				name: 'id_dialog',
-				type: OMODEL_NUM,
-				nullable: false,
-				ref: 'dialog.id',
-				comment: 'Id del diálogo en el que se ha puesto el marcapáginas'
-			),
-			new OModelField(
-				name: 'comment',
-				type: OMODEL_TEXT,
-				nullable: false,
-				size: 200,
-				comment: 'Comentario para el marcapaginas'
-			),
-			new OModelField(
-				name: 'created_at',
-				type: OMODEL_CREATED,
-				comment: 'Fecha de creación del registro'
-			),
-			new OModelField(
-				name: 'updated_at',
-				type: OMODEL_UPDATED,
-				nullable: true,
-				default: null,
-				comment: 'Fecha de última modificación del registro'
-			)
-		);
+	#[OPK(
+	  comment: 'Id único de cada marcapáginas'
+	)]
+	public ?int $id;
 
-		parent::load($model);
-	}
+	#[OField(
+	  comment: 'Id del cuento en el que esta el marcapáginas',
+	  nullable: false,
+	  ref: 'tale.id'
+	)]
+	public ?int $id_tale;
+
+	#[OField(
+	  comment: 'Id de la página en la que esta el marcapaginas',
+	  nullable: false,
+	  ref: 'page.id'
+	)]
+	public ?int $id_page;
+
+	#[OField(
+	  comment: 'Id del diálogo en el que se ha puesto el marcapáginas',
+	  nullable: false,
+	  ref: 'dialog.id'
+	)]
+	public ?int $id_dialog;
+
+	#[OField(
+	  comment: 'Comentario para el marcapaginas',
+	  nullable: false,
+	  max: 200
+	)]
+	public ?string $comment;
+
+	#[OCreatedAt(
+	  comment: 'Fecha de creación del registro'
+	)]
+	public ?string $created_at;
+
+	#[OUpdatedAt(
+	  comment: 'Fecha de última modificación del registro'
+	)]
+	public ?string $updated_at;
 }
